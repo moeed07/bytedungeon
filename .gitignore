@@ -1,0 +1,5 @@
+game.exe
+*.exe
+*.o
+*.out
+.vscode/
