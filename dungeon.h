@@ -1,8 +1,9 @@
 #ifndef DUNGEON_H
 #define DUNGEON_H
 
-#include "player.h"
+#include "Player.h"
 #include <iostream>
+#include <cstdlib>
 using namespace std;
 
 const int WIDTH = 20;
@@ -20,11 +21,26 @@ public:
     void makeMap() {
         for (int row = 0; row < HEIGHT; row++) {
             for (int col = 0; col < WIDTH; col++) {
-                if (row == 0 || row == HEIGHT - 1 || col == 0 || col == WIDTH - 1) {
-                    map[row][col] = '#';
-                } else {
-                    map[row][col] = '.';
-                }
+                map[row][col] = '#';
+            }
+        }
+
+        int roomCount = 4;
+        for (int i = 0; i < roomCount; i++) {
+            makeRoom();
+        }
+    }
+
+    void makeRoom() {
+        int roomWidth = rand() % 5 + 3;
+        int roomHeight = rand() % 3 + 2;
+
+        int startX = rand() % (WIDTH - roomWidth - 1) + 1;
+        int startY = rand() % (HEIGHT - roomHeight - 1) + 1;
+
+        for (int row = startY; row < startY + roomHeight; row++) {
+            for (int col = startX; col < startX + roomWidth; col++) {
+                map[row][col] = '.';
             }
         }
     }
