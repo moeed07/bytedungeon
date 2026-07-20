@@ -2,6 +2,7 @@
 #define DUNGEON_H
 
 #include "Player.h"
+#include "Enemy.h"
 #include <iostream>
 #include <cstdlib>
 using namespace std;
@@ -22,6 +23,12 @@ public:
         for (int row = 0; row < HEIGHT; row++) {
             for (int col = 0; col < WIDTH; col++) {
                 map[row][col] = '#';
+            }
+        }
+
+        for (int row = 1; row <= 3; row++) {
+            for (int col = 1; col <= 4; col++) {
+                map[row][col] = '.';
             }
         }
 
@@ -55,13 +62,27 @@ public:
         return true;
     }
 
-    void showMap(Player player) {
+    void showMap(Player player, Enemy enemyList[], int enemyCount) {
         cout << endl;
         for (int row = 0; row < HEIGHT; row++) {
             for (int col = 0; col < WIDTH; col++) {
+                bool printed = false;
+
                 if (player.getX() == col && player.getY() == row) {
                     cout << player.getSymbol();
-                } else {
+                    printed = true;
+                }
+
+                if (!printed) {
+                    for (int i = 0; i < enemyCount; i++) {
+                        if (enemyList[i].isAlive() && enemyList[i].getX() == col && enemyList[i].getY() == row) {
+                            cout << enemyList[i].getSymbol();
+                            printed = true;
+                        }
+                    }
+                }
+
+                if (!printed) {
                     cout << map[row][col];
                 }
             }

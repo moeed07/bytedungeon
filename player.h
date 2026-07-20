@@ -1,7 +1,7 @@
 #ifndef PLAYER_H
 #define PLAYER_H
 
-#include "entity.h"
+#include "Entity.h"
 #include <iostream>
 using namespace std;
 
@@ -10,7 +10,7 @@ private:
     int score;
 
 public:
-    Player(int startX, int startY) : Entity(startX, startY, 100, '@') {
+    Player(int startX, int startY) : Entity(startX, startY, 100, 15, '@') {
         score = 0;
     }
 
@@ -19,7 +19,7 @@ public:
         if (health < 0) {
             health = 0;
         }
-        cout << "You got hurt! Health: " << health << endl;
+        cout << "You got hit! Health: " << health << endl;
     }
 
     void addScore(int points) {
