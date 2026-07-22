@@ -3,6 +3,7 @@
 
 #include "Player.h"
 #include "Enemy.h"
+#include "Item.h"
 #include <iostream>
 #include <cstdlib>
 using namespace std;
@@ -62,7 +63,7 @@ public:
         return true;
     }
 
-    void showMap(Player player, Enemy enemyList[], int enemyCount) {
+    void showMap(Player player, Enemy enemyList[], int enemyCount, Item* itemList[], bool itemPicked[], int itemCount) {
         cout << endl;
         for (int row = 0; row < HEIGHT; row++) {
             for (int col = 0; col < WIDTH; col++) {
@@ -77,6 +78,15 @@ public:
                     for (int i = 0; i < enemyCount; i++) {
                         if (enemyList[i].isAlive() && enemyList[i].getX() == col && enemyList[i].getY() == row) {
                             cout << enemyList[i].getSymbol();
+                            printed = true;
+                        }
+                    }
+                }
+
+                if (!printed) {
+                    for (int i = 0; i < itemCount; i++) {
+                        if (!itemPicked[i] && itemList[i]->getX() == col && itemList[i]->getY() == row) {
+                            cout << '!';
                             printed = true;
                         }
                     }
