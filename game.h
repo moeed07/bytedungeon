@@ -12,7 +12,7 @@ class Game {
 private:
     Dungeon dungeon;
     Player player;
-    Enemy enemyList[2];
+    Enemy* enemyList[2];
     int enemyCount;
     Item* itemList[2];
     bool itemPicked[2];
@@ -20,7 +20,9 @@ private:
     bool isRunning;
 
 public:
-    Game() : player(1, 1), enemyList{ Enemy(5, 5), Enemy(10, 3) } {
+    Game() : player(1, 1) {
+        enemyList[0] = new Goblin(5, 5);
+        enemyList[1] = new Skeleton(10, 3);
         enemyCount = 2;
         isRunning = true;
 
@@ -99,18 +101,19 @@ public:
 
     void checkCombat() {
         for (int i = 0; i < enemyCount; i++) {
-            if (enemyList[i].isAlive() && enemyList[i].getX() == player.getX() && enemyList[i].getY() == player.getY()) {
+            if (enemyList[i]->isAlive() && enemyList[i]->getX() == player.getX() && enemyList[i]->getY() == player.getY()) {
                 cout << "A wild enemy attacks!" << endl;
+                enemyList[i]->specialAttack();
 
-                while (enemyList[i].isAlive() && player.getHealth() > 0) {
-                    enemyList[i].takeDamage(player.getAttackPower());
+                while (enemyList[i]->isAlive() && player.getHealth() > 0) {
+                    enemyList[i]->takeDamage(player.getAttackPower());
 
-                    if (enemyList[i].isAlive()) {
-                        player.takeDamage(enemyList[i].getAttackPower());
+                    if (enemyList[i]->isAlive()) {
+                        player.takeDamage(enemyList[i]->getAttackPower());
                     }
                 }
 
-                if (!enemyList[i].isAlive()) {
+                if (!enemyList[i]->isAlive()) {
                     cout << "You defeated the enemy!" << endl;
                     player.addScore(10);
                 }
@@ -124,6 +127,12 @@ public:
                 player.addItem(itemList[i]);
                 itemPicked[i] = true;
             }
+        }
+    }
+
+    ~Game() {
+        for (int i = 0; i < enemyCount; i++) {
+            delete enemyList[i];
         }
     }
 };

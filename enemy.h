@@ -7,7 +7,7 @@ using namespace std;
 
 class Enemy : public Entity {
 public:
-    Enemy(int startX, int startY) : Entity(startX, startY, 40, 10, 'E') {
+    Enemy(int startX, int startY, int hp, int attack, char sym) : Entity(startX, startY, hp, attack, sym) {
     }
 
     void takeDamage(int amount) {
@@ -15,7 +15,31 @@ public:
         if (health < 0) {
             health = 0;
         }
-        cout << "Enemy got hit! Enemy health: " << health << endl;
+        cout << "Enemy got hit! Health: " << health << endl;
+    }
+
+    virtual void specialAttack() {
+        cout << "The enemy attacks normally." << endl;
+    }
+};
+
+class Goblin : public Enemy {
+public:
+    Goblin(int startX, int startY) : Enemy(startX, startY, 30, 8, 'G') {
+    }
+
+    void specialAttack() {
+        cout << "The goblin slashes twice quickly!" << endl;
+    }
+};
+
+class Skeleton : public Enemy {
+public:
+    Skeleton(int startX, int startY) : Enemy(startX, startY, 50, 18, 'S') {
+    }
+
+    void specialAttack() {
+        cout << "The skeleton swings its heavy bone club!" << endl;
     }
 };
 
