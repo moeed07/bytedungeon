@@ -5,6 +5,7 @@
 #include "Player.h"
 #include "Enemy.h"
 #include "Item.h"
+#include "savemanager.h"
 #include <iostream>
 using namespace std;
 
@@ -31,6 +32,25 @@ public:
         itemPicked[0] = false;
         itemPicked[1] = false;
         itemCount = 2;
+
+        char loadChoice;
+        cout << "Load saved game? (y/n): ";
+        cin >> loadChoice;
+        cin.ignore();
+
+        if (loadChoice == 'y') {
+            int loadX, loadY, loadHealth, loadScore;
+            bool success = SaveManager::loadGame(loadX, loadY, loadHealth, loadScore);
+            if (success) {
+                player.setPosition(loadX, loadY);
+                player.setHealth(loadHealth);
+                player.setScore(loadScore);
+                cout << "Save loaded!" << endl;
+            }
+            else {
+                cout << "No save file found. Starting new game." << endl;
+            }
+        }
     }
 
     void start() {
@@ -48,6 +68,8 @@ public:
                 isRunning = false;
             }
         }
+
+        SaveManager::saveGame(player);
     }
 
     void getInput() {

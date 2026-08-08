@@ -25,7 +25,13 @@ public:
         }
         cout << "You got hit! Health: " << health << endl;
     }
+void setHealth(int hp) {
+        health = hp;
+    }
 
+    void setScore(int points) {
+        score = points;
+    }
     void addScore(int points) {
         score = score + points;
     }
