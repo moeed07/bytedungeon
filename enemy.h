@@ -43,4 +43,14 @@ public:
     }
 };
 
+class Dragon : public Enemy {
+public:
+    Dragon(int startX, int startY) : Enemy(startX, startY, 100, 25, 'D') {
+    }
+
+    void specialAttack() {
+        cout << "The dragon breathes fire!" << endl;
+    }
+};
+
 #endif

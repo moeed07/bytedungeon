@@ -5,7 +5,7 @@
 #include "Player.h"
 #include "Enemy.h"
 #include "Item.h"
-#include "savemanager.h"
+#include "SaveManager.h"
 #include <iostream>
 using namespace std;
 
@@ -13,19 +13,22 @@ class Game {
 private:
     Dungeon dungeon;
     Player player;
-    Enemy* enemyList[2];
+    Enemy* enemyList[3];
     int enemyCount;
     Item* itemList[2];
     bool itemPicked[2];
     int itemCount;
     bool isRunning;
+    bool hasWon;
 
 public:
     Game() : player(1, 1) {
         enemyList[0] = new Goblin(5, 5);
         enemyList[1] = new Skeleton(10, 3);
-        enemyCount = 2;
+        enemyList[2] = new Dragon(15, 7);
+        enemyCount = 3;
         isRunning = true;
+        hasWon = false;
 
         itemList[0] = new Item("Health Potion", 20, 3, 2);
         itemList[1] = new Item("Health Potion", 20, 12, 6);
@@ -55,7 +58,7 @@ public:
 
     void start() {
         cout << "Welcome to the dungeon!" << endl;
-        cout << "Use w a s d to move. Press i for inventory, u to use item, q to quit." << endl;
+        cout << "Defeat the dragon to win! Use w a s d to move. Press i for inventory, u to use item, q to quit." << endl;
 
         while (isRunning) {
             dungeon.showMap(player, enemyList, enemyCount, itemList, itemPicked, itemCount);
@@ -65,6 +68,12 @@ public:
 
             if (player.getHealth() <= 0) {
                 cout << "You died. Game over." << endl;
+                isRunning = false;
+            }
+
+            if (hasWon) {
+                cout << "Congratulations! You defeated the dragon and won the game!" << endl;
+                cout << "Final score: " << player.getScore() << endl;
                 isRunning = false;
             }
         }
@@ -138,6 +147,10 @@ public:
                 if (!enemyList[i]->isAlive()) {
                     cout << "You defeated the enemy!" << endl;
                     player.addScore(10);
+
+                    if (i == 2) {
+                        hasWon = true;
+                    }
                 }
             }
         }
